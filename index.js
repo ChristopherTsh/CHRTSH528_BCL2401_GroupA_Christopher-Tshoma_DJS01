@@ -20,13 +20,19 @@ const velocityBasedOnAcceleration = calcNewVel(velocity, acceleration, time) //c
 
 // Pick up an error with how the function below is called and make it robust to such errors
 function calcNewVel(velocity, acceleration, time)  { 
+  if(typeof velocity !== 'number' || typeof acceleration !== 'number'|| typeof time !== 'number' ){
+    throw new Error('only number are allowed');
+  }
   return velocity + (acceleration*time)*(time/1000)
+} 
+try{
+console.log(`Corrected New Velocity: ${velocityBasedOnAcceleration} km/h`);
+} catch(error){
+  console.error('Error:',error.message)
 }
 
-console.log(`Corrected New Velocity: ${velocityBasedOnAcceleration} km/h`);
 console.log(`Corrected New Distance: ${newDistance} km`);
 console.log(`Corrected Remaining Fuel: ${remainingFuel} kg`);
-
 
 
 
