@@ -14,18 +14,19 @@ const fuel = 5000; // remaining fuel (kg)
 const fuelBurnRate = 0.5; // fuel burn rate (kg/s)
 
 
-const newDistance = distance + (velocity * time) //calcultes new distance
-const remainingFuel = fuelBurnRate*time //calculates remaining fuel
+const newDistance = distance + velocity //36 000 000 calculates new distance
+const remainingFuel = fuel-(fuelBurnRate*time)  //1 800 calculates remaining fuel
 const velocityBasedOnAcceleration = calcNewVel(acceleration, velocity, time) //calculates new velocity based on acceleration
 
 // Pick up an error with how the function below is called and make it robust to such errors
-calcNewVel = (velocity, acceleration, time) => { 
-  return velocity + (acceleration*time)
+function calcNewVel(velocity, acceleration, time)  { 
+  return velocity + (acceleration*time)*(time/1000)
 }
 
 console.log(`Corrected New Velocity: ${velocityBasedOnAcceleration} km/h`);
 console.log(`Corrected New Distance: ${newDistance} km`);
 console.log(`Corrected Remaining Fuel: ${remainingFuel} kg`);
+
 
 
 
