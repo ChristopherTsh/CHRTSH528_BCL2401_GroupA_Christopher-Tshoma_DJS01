@@ -1,46 +1,111 @@
-### DJS01: Mars Climate Orbiter Challenge
+# Debugging Guide: Calculations Made Easy
 
-The Mars Climate Orbiter incident in 1999 is a stark reminder of the importance of precision in space missions, highlighting how a simple unit mismatch led to the loss of the spacecraft. This challenge seeks to simulate similar challenges in a spacecraft navigation system, emphasising the need for accuracy in calculations.
+- Welcome to our debugging guide! We'll tackle those pesky calculation errors head-on.
+- these steps will help you navigate the treacherous waters of math bugs.
+
+## 1. Make the Code More Readable
+
+
+- **Use Descriptive Variable Names**: Instead of `vel`, `acc`, and `t`, go for `velocity`, `acceleration`, and `time`. 
+
+- **Add Comments**: Explain your intentions. A comment like `// Calculate new velocity` clarifies your purpose.
+
+## 2. Pick Up Calculation Errors
+
+Now, let's find bugs. We've got three functions to debug:
+
+### `calcNewVelocity`
+
+```javascript
+function calcNewVelocity(velocity, acceleration, time) {
+  if (
+    typeof velocity !== "number" ||
+    typeof acceleration !== "number" ||
+    typeof time !== "number"
+  ) {
+    throw new Error("Only numbers are allowed for calcNewVelocity");
+  }
+  return velocity + acceleration * time * (time / 1000);
+}
+```
+
+- We check if all inputs are numbers. If not, we throw an error. No more accidental string concatenation disasters!
+
+### `calcNewDistance`
+
+```javascript
+function calcNewDistance(distance, velocity) {
+  if (typeof distance !== "number" || typeof velocity !== "number") {
+    throw new Error("Only numbers are allowed for calcNewDistance");
+  }
+  return distance + velocity;
+}
+```
+
+- Same drill: validate inputs. If they're not numbers, we raise the alarm.
+
+### `calcNewRemainingFuel`
+
+```javascript
+function calcNewRemainingFuel(fuel, fuelBurnRate, time) {
+  if (
+    typeof fuel !== "number" ||
+    typeof fuelBurnRate !== "number" ||
+    typeof time !== "number"
+  ) {
+    throw new Error("Only numbers are allowed for calcNewRemainingFuel");
+  }
+  return fuel - fuelBurnRate * time;
+}
+```
+
+- You guessed it—more input checks. Safety first!
+
+## 3. Make Calculations Robust
+
+We're not stopping at error checks. Let's make our calculations rock-solid:
+
+- **Handle Division by Zero**: If your `fuelBurnRate` is zero, we don't want the universe to implode. Throw an error instead.
+
+- **Unit of Measurement Sanity**: Imagine someone enters fuel in bananas per second. Nope! We'll catch that and throw an error too.
+
+## Testing Time
+
+Now, let's test our functions. Buckle up, because we're about to calculate distances, fuel, and velocities like pros. 🚀
+
+```javascript
+try {
+  const velocity = 10000; // velocity (km/h)
+  const acceleration = 3; // acceleration (m/s^2)
+  const time = 3600; // seconds (1 hour)
+  const distance = 0; // distance (km)
+  const fuel = 5000; // remaining fuel (kg)
+  const fuelBurnRate = 0.5; // fuel burn rate (kg/s)
+
+  const newDistance = calcNewDistance(distance, velocity);
+  const remainingFuel = calcNewRemainingFuel(fuel, fuelBurnRate, time);
+  const velocityBasedOnAcceleration = calcNewVelocity(
+    velocity,
+    acceleration,
+    time
+  );
+
+  console.log(`Corrected New Distance: ${newDistance} km`);
+  console.log(`Corrected Remaining Fuel: ${remainingFuel} kg`);
+  console.log(`Corrected New Velocity: ${velocityBasedOnAcceleration} km/h`);
+} catch (error) {
+  console.error("Error:", error.message);
+}
+```
+
+ Happy coding! 🤓🔍
+
+---
+
+
 
 #### Challenge Overview
 
-This challenge invites students to debug, refactor, and enhance JavaScript functions designed for determining the trajectory of a spacecraft. The initial functions are flawed and may result in incorrect calculations.
 
 ![alt text](mars.gif)
 
-##### Problem Areas to Address
-
-1. **Unit Mismatch**: The provided functions fail to convert units correctly, leading to calculation inaccuracies.
-2. **Parameter Misalignment**: Parameters are not handled in a way that prevents or highlights the potential for unit mismatch errors, leading to possible confusion.
-
-##### Initial Parameters
-
-- **Initial Velocity (`vel`)**: The starting speed of the spacecraft, 10,000 km/h.
-- **Acceleration (`acc`)**: The spacecraft's acceleration, 3 m/s².
-- **Time (`time`)**: The duration of the calculation, 3,600 seconds (equivalent to 1 hour).
-- **Initial Distance (`d`)**: The starting distance from the reference point, 0 km.
-- **Initial Fuel (`fuel`)**: The starting amount of fuel, 5,000 kg.
-- **Fuel Burn Rate (`fbr`)**: The rate at which fuel is consumed, 0.5 kg/s.
-
-##### Expected Corrected Results
-
-- **New Velocity**: Approximately 48880 km/h after correction.
-- **New Distance**: Approximately 10000 km after correction.
-- **Remaining Fuel**: Approximately 3,200 kg after correction.
-
-#### Your Task
-
-1. **Identify and Understand Errors**: Analyse the provided functions to determine how unit mismatches and parameter misalignments cause incorrect results.
-2. **Refactor and Correct**: Modify the functions to handle parameters more effectively, incorporating object destructuring for clarity and implementing necessary unit conversions.
-
-#### Solution Approach
-
-- Use object destructuring in function parameters for better clarity.
-- Implement accurate unit conversions within the functions.
-- Ensure the corrected functions address the issues of unit mismatches and parameter clarity.
-
-#### Debugging Guide
-
-1. Enhance code readability for easier debugging.
-2. Identify and correct calculation errors.
-3. Improve the robustness of calculations. If incorrect units are used or other errors are detected, the code should notify the user instead of producing an incorrect result.
